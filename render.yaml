@@ -1,0 +1,51 @@
+version: "1"
+services:
+  - type: web
+    name: job-board-api
+    runtime: python
+    buildCommand: "bash build.sh"
+    startCommand: "gunicorn Job_Board_Platform.wsgi:application"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: job-board-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: job-board-redis
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: DJANGO_SETTINGS_MODULE
+        value: "Job_Board_Platform.settings"
+      - key: ALLOWED_HOSTS
+        value: ".onrender.com"
+
+  - type: worker
+    name: job-board-worker
+    runtime: python
+    buildCommand: "bash build.sh"
+    startCommand: "celery -A Job_Board_Platform worker --loglevel=info"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: job-board-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: job-board-redis
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+
+databases:
+  - name: job-board-db
+    plan: free
+
+redis:
+  - name: job-board-redis
+    plan: free
