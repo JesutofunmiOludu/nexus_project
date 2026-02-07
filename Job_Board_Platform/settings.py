@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-y=ml30c7ehg9mo+dyno#zg6&j%+r#f5^)tji8&427ln1m1-xj0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost 127.0.0.1').split()
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'laughterwebs.pythonanywhere.com').split()
 
 
 # Application definition
@@ -85,22 +85,22 @@ WSGI_APPLICATION = 'Job_Board_Platform.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 # TEMPORARY: Using SQLite for development (switch back to PostgreSQL later)
-#DATABASES = {
-#    'default': {
-#       'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': BASE_DIR / 'db.sqlite3',
-#    }
-#}
+DATABASES = {
+    'default': {
+       'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 # PostgreSQL Configuration
 import dj_database_url
 
-DATABASES = {
+"""DATABASES = {
     'default': dj_database_url.config(
         default=f"postgresql://{os.getenv('DB_USER', 'postgres')}:{os.getenv('DB_PASSWORD', 'password')}@{os.getenv('DB_HOST', 'localhost')}:{os.getenv('DB_PORT', '5432')}/{os.getenv('DB_NAME', 'jobboard_db')}",
         conn_max_age=600
     )
-}
+}"""
 
 # Email Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
